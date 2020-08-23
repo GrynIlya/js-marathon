@@ -1,57 +1,60 @@
-// Первая задача
+const $btn = document.getElementById('btn-kick');
+const character ={
+    name: 'Pikachu',
+    defaultHP:100,
+    damageHP:100,
+    elHP:document.getElementById('health-character'),
+    elProgressbar:document.getElementById('progressbar-character'),
+};
+const enemy ={
+    name: 'Charmander',
+    defaultHP:100,
+    damageHP:100,
+    elHP:document.getElementById('health-enemy'),
+    elProgressbar:document.getElementById('progressbar-enemy'),
+};
 
-const firstRow = 'мама мыла раму';
-const secondRow = 'собака друг человека';
+$btn.addEventListener('click',function () {
+    console.log('Kick');
+    changeHP(random(20),character);
+    changeHP(random(20),enemy);
+    
+});
 
+function init() {
+    console.log('Start Game!');
+    renderHP(character);
+    renderHP(enemy);
+}
 
+function renderHP(person) {
+    renderHPLife(person);
+    renderProgressbarHP(person);
+}
 
-    function getRow(firstRow, secondRow) {
-        let firstCount = 0;
-        let secondCount = 0;
+function renderHPLife(person) {
+    person.elHP.innerText = person.damageHP + '/' + person.defaultHP;
+}
 
-        for(let i = 0;i < firstRow.length; i++){
-            if(firstRow.charAt(i) == 'а'){
-                firstCount++;
-            }
-        }
-        for(let i = 0;i < secondRow.length; i++){
-            if(secondRow.charAt(i) == 'а'){
-                secondCount++;
-            }
-        }
-        console.log(firstCount);
-        console.log(secondCount);
-    if(firstCount > secondCount){
-        return firstRow;
+function renderProgressbarHP(person) {
+    person.elProgressbar.style.width = person.damageHP + '%';
+}
+
+function changeHP(count, person) {
+    if(person.damageHP < count){
+        person.damageHP = 0;
+        alert('Бедный ' + person.name + ' проиграл бой!');
+        $btn.disabled = true;
     }else{
-        return secondRow;
-    }
+        person.damageHP -=count;
 
     }
-
-    console.log(getRow(firstRow, secondRow)); // мама мыла раму
-
-
-// Вторая задача
-
-function formattedPhone(phone) {
-    let result='';
-    for(let i = 0;i < phone.length; i++){
-        console.log(phone.charAt(i));
-        if(i == 1){
-            result += phone.charAt(i) + ' (';
-        }else if(i == 4){
-            result += phone.charAt(i) + ') ';
-        }else if(i == 7 || i ==9){
-            result += phone.charAt(i) + '-';
-        }else{
-
-            result += phone.charAt(i);
-        }
-
-    }
-    return result;
+    renderHP(person);
 
 }
 
-console.log(formattedPhone('+71234567890')); // +7 (123) 456-78-90
+function random(num) {
+    return Math.ceil(Math.random() * num)
+}
+
+init();
